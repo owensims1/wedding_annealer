@@ -1,14 +1,23 @@
 module Annealing
   class DiningRoom
-    def initialize(seating_chart)
-      define_seats(seating_chart)
+    attr_accessor :seats, :guests
+
+    def initialize(guests, arrangement)
+      @guests = guests
+      define_seats(arrangement)
+    end
+
+    def seat_guests
+      guests.each_with_index do |guest, index|
+        seats[index].guest = guest
+      end
     end
 
     private
 
-    def define_seats(seating_chart)
-      seats = eval(seating_chart)
-      seats.inject([]) { |seats, position| Annealing::Seat.new(position[0], position[1]) }
+    def define_seats(arrangement)
+      seats = eval(arrangement)
+      self.seats = seats.map { |position| Annealing::Seat.new(x: position[0], y: position[1]) }
     end
   end
 end
