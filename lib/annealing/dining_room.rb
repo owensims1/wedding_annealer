@@ -21,6 +21,23 @@ module Annealing
       end
     end
 
+    def rearrange
+      seat_1 = seats.sample
+      seat_2 = seats.sample #These could end up being the same, which is fine, but results in a wasted cycle
+      guest_1 = seat_1.guest
+      seat_1.guest = seat_2.guest
+      seat_2.guest = guest_1
+      @swapped_seats = [seat_1, seat_2]
+      self
+    end
+
+    def rollback
+      seat_1, seat_2 = @swapped_seats
+      guest_1 = seat_1.guest
+      seat_1.guest = seat_2.guest
+      seat_2.guest = guest_1
+    end
+
     private
 
     def define_seats(arrangement)

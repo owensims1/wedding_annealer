@@ -1,6 +1,6 @@
 module Annealing
   class WeddingAnnealer
-    DEFAULT_TIME = 1
+    DEFAULT_TIME = 10
 
     attr_accessor :guests, :dining_room, :state
 
@@ -21,8 +21,24 @@ module Annealing
 
     def anneal_step(time, current_time)
       current_score = state.total_room_score
-      binding.pry
-      #...
+      temperature = temperature(time, current_time)
+
+      next_state = state.rearrange
+      next_score = next_state.total_room_score
+
+      if probability(current_score, next_score, temperature) > rand(0.0..1.0)
+        self.state = next_state
+      else
+        state.rollback
+      end
+    end
+
+    def temperature(total_time, current_time)
+      50 * Math.exp(0 - (5 * (current_time / total_time.to_f)))
+    end
+
+    def probability(score_1, score_2, temperature)
+      Math.exp((score_1 - score_2) / temperature)
     end
   end
 end
