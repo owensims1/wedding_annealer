@@ -1,6 +1,6 @@
 module Annealing
   class WeddingAnnealer
-    DEFAULT_TIME = 100
+    DEFAULT_TIME = 50_000
 
     attr_accessor :guests, :dining_room, :state
 
